@@ -2,24 +2,25 @@ package com.nemonotfound.nemos.creatures.datagen;
 
 import com.nemonotfound.nemos.creatures.block.CreaturesBlocks;
 import com.nemonotfound.nemos.creatures.registry.tag.CreatureBlockTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.BlockTags;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.registry.tag.BlockTags.PICKAXE_MINEABLE;
+import static net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE;
 
-public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
+public class BlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
-    public BlockTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public BlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+    protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
         valueLookupBuilder(CreatureBlockTags.CRIMSON_BONE_MEAL_REPLACEABLE)
                 .forceAddTag(BlockTags.BASE_STONE_OVERWORLD)
                 .forceAddTag(BlockTags.CAVE_VINES)
@@ -34,7 +35,7 @@ public class BlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 .add(Blocks.NETHERRACK)
                 .add(Blocks.CRIMSON_NYLIUM);
 
-        valueLookupBuilder(PICKAXE_MINEABLE)
+        valueLookupBuilder(MINEABLE_WITH_PICKAXE)
                 .add(CreaturesBlocks.FROZEN_BONE_BLOCK)
                 .add(CreaturesBlocks.CRIMSON_BONE_BLOCK)
                 .add(CreaturesBlocks.PARCHED_BONE_BLOCK)

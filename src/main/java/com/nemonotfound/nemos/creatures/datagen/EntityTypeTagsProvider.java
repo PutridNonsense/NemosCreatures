@@ -1,23 +1,23 @@
 package com.nemonotfound.nemos.creatures.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.EntityTypeTags;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.tags.EntityTypeTags;
 import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
 import static com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes.*;
 
-public class EntityTypeTagsProvider extends FabricTagProvider.EntityTypeTagProvider {
+public class EntityTypeTagsProvider extends FabricTagsProvider.EntityTypeTagsProvider {
 
-    public EntityTypeTagsProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public EntityTypeTagsProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    protected void configure(RegistryWrapper.@NonNull WrapperLookup wrapperLookup) {
+    protected void addTags(HolderLookup.@NonNull Provider wrapperLookup) {
         valueLookupBuilder(EntityTypeTags.SKELETONS)
                 .add(CRIMSON_SKELETON)
                 .add(SNOWY_SKELETON)

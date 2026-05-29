@@ -7,9 +7,9 @@ import com.nemonotfound.nemos.creatures.item.CreaturesItemGroups;
 import com.nemonotfound.nemos.creatures.item.CreaturesItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.entity.EntityType;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,12 +31,12 @@ public class NemosCreatures implements ModInitializer {
 		CreaturesItemGroups.bootstrap();
 		ModDispenserBehavior.registerDefaults();
 
-		LootTableEvents.MODIFY.register((key, tableBuilder, source, wrapperLookup) -> {
-			if (source.isBuiltin() && EntityType.PARCHED.getLootTableKey().isPresent() && EntityType.PARCHED.getLootTableKey().get() == key) {
-				var pool = LootPool.builder()
-						.with(ItemEntry.builder(CreaturesItems.PARCHED_BONE));
+		LootTableEvents.MODIFY.register((key, tableBuilder, source, _) -> {
+			if (source.isBuiltin() && EntityType.PARCHED.getDefaultLootTable().isPresent() && EntityType.PARCHED.getDefaultLootTable().get() == key) {
+				var pool = LootPool.lootPool()
+						.add(LootItem.lootTableItem(CreaturesItems.PARCHED_BONE));
 
-				tableBuilder.pool(pool);
+				tableBuilder.withPool(pool);
 			}
 		});
 	}

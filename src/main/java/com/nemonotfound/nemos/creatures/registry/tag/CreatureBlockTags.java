@@ -1,11 +1,11 @@
 package com.nemonotfound.nemos.creatures.registry.tag;
 
-import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
-
 import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 
 public class CreatureBlockTags {
 
@@ -13,6 +13,6 @@ public class CreatureBlockTags {
     public static final TagKey<Block> WARPED_BONE_MEAL_REPLACEABLE = of("warped_bone_meal_replaceable");
 
     private static TagKey<Block> of(String id) {
-        return TagKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, id));
+        return TagKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, id));
     }
 }

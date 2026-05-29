@@ -4,8 +4,8 @@ import com.nemonotfound.nemos.creatures.datagen.*;
 import com.nemonotfound.nemos.creatures.world.gen.feature.ModNetherConfiguredFeatures;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.registry.RegistryBuilder;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 
 public class NemosCreaturesDataGenerator implements DataGeneratorEntrypoint {
 
@@ -16,14 +16,14 @@ public class NemosCreaturesDataGenerator implements DataGeneratorEntrypoint {
 		pack.addProvider(EnglishLanguageProvider::new);
 		pack.addProvider(EntityLootTableProvider::new);
 		pack.addProvider(CreaturesModelProvider::new);
-		pack.addProvider(RecipeProvider::new);
+		pack.addProvider(CreaturesRecipeProvider::new);
 		pack.addProvider(BlockTagProvider::new);
 		pack.addProvider(WorldGenProvider::new);
 		pack.addProvider(EntityTypeTagsProvider::new);
 	}
 
 	@Override
-	public void buildRegistry(RegistryBuilder registryBuilder) {
-		registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModNetherConfiguredFeatures::bootstrap);
+	public void buildRegistry(RegistrySetBuilder registryBuilder) {
+		registryBuilder.add(Registries.CONFIGURED_FEATURE, ModNetherConfiguredFeatures::bootstrap);
 	}
 }

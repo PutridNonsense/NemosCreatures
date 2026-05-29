@@ -2,25 +2,25 @@ package com.nemonotfound.nemos.creatures.item;
 
 import com.nemonotfound.nemos.creatures.world.CreatureWorldEvents;
 import com.nemonotfound.nemos.creatures.world.gen.feature.ModNetherConfiguredFeatures;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.ParticleUtil;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.event.GameEvent;
-
 import java.util.Map;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ParticleUtils;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.gameevent.GameEvent;
+import org.jspecify.annotations.NonNull;
 
 public class CrimsonBoneMealItem extends Item {
 
@@ -39,30 +39,30 @@ public class CrimsonBoneMealItem extends Item {
             Map.entry(Blocks.WARPED_ROOTS, Blocks.CRIMSON_ROOTS)
     );
 
-    public CrimsonBoneMealItem(Settings settings) {
+    public CrimsonBoneMealItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        var world = context.getWorld();
-        var blockPos = context.getBlockPos();
+    public @NonNull InteractionResult useOn(UseOnContext context) {
+        var world = context.getLevel();
+        var blockPos = context.getClickedPos();
         var blockState = world.getBlockState(blockPos);
-        var itemStack = context.getStack();
+        var itemStack = context.getItemInHand();
 
-        if (!useOnReplaceable(world, blockState, blockPos, itemStack) && !useOnCrimsonNylium(context.getStack(), world, blockState, blockPos)) {
-            return ActionResult.PASS;
+        if (!useOnReplaceable(world, blockState, blockPos, itemStack) && !useOnCrimsonNylium(context.getItemInHand(), world, blockState, blockPos)) {
+            return InteractionResult.PASS;
         }
 
-        if (!world.isClient()) {
-            context.getPlayer().emitGameEvent(GameEvent.ITEM_INTERACT_FINISH);
-            world.syncWorldEvent(CreatureWorldEvents.CRIMSON_BONE_MEAL_USED, blockPos, 15);
+        if (!world.isClientSide()) {
+            context.getPlayer().gameEvent(GameEvent.ITEM_INTERACT_FINISH);
+            world.levelEvent(CreatureWorldEvents.CRIMSON_BONE_MEAL_USED, blockPos, 15);
         }
 
-        return ActionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
-    public static boolean useOnReplaceable(World world, BlockState blockState, BlockPos blockPos, ItemStack itemStack) {
+    public static boolean useOnReplaceable(Level world, BlockState blockState, BlockPos blockPos, ItemStack itemStack) {
         var oldBlock = blockState.getBlock();
         var blockReplacement = BLOCK_REPLACEMENT_MAP.get(oldBlock);
 
@@ -70,26 +70,26 @@ public class CrimsonBoneMealItem extends Item {
             return false;
         }
 
-        if (world instanceof ServerWorld) {
-            world.setBlockState(calculateNewBlockPos(blockState, blockPos), blockReplacement.getDefaultState());
-            itemStack.decrement(1);
+        if (world instanceof ServerLevel) {
+            world.setBlockAndUpdate(calculateNewBlockPos(blockState, blockPos), blockReplacement.defaultBlockState());
+            itemStack.shrink(1);
         }
 
         return true;
     }
 
-    public static boolean useOnCrimsonNylium(ItemStack stack, World world, BlockState blockState, BlockPos pos) {
+    public static boolean useOnCrimsonNylium(ItemStack stack, Level world, BlockState blockState, BlockPos pos) {
         if (blockState.getBlock() != Blocks.CRIMSON_NYLIUM) {
             return false;
         }
 
-        if (world instanceof ServerWorld serverWorld) {
-            world.getRegistryManager()
-                    .getOptional(RegistryKeys.CONFIGURED_FEATURE)
-                    .flatMap(registry -> registry.getOptional(ModNetherConfiguredFeatures.CRIMSON_FOREST_VEGETATION_PATCH_BONEMEAL))
-                    .ifPresent(entry -> entry.value().generate(serverWorld, serverWorld.getChunkManager().getChunkGenerator(), serverWorld.random, pos.up()));
+        if (world instanceof ServerLevel serverWorld) {
+            world.registryAccess()
+                    .lookup(Registries.CONFIGURED_FEATURE)
+                    .flatMap(registry -> registry.get(ModNetherConfiguredFeatures.CRIMSON_FOREST_VEGETATION_PATCH_BONEMEAL))
+                    .ifPresent(entry -> entry.value().place(serverWorld, serverWorld.getChunkSource().getGenerator(), serverWorld.getRandom(), pos.above()));
 
-            stack.decrement(1);
+            stack.shrink(1);
         }
 
         return true;
@@ -97,24 +97,24 @@ public class CrimsonBoneMealItem extends Item {
 
     private static BlockPos calculateNewBlockPos(BlockState blockState, BlockPos blockPos) {
         if (
-                blockState.contains(Properties.DOUBLE_BLOCK_HALF) &&
-                        blockState.get(Properties.DOUBLE_BLOCK_HALF).equals(DoubleBlockHalf.UPPER)
+                blockState.hasProperty(BlockStateProperties.DOUBLE_BLOCK_HALF) &&
+                        blockState.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF).equals(DoubleBlockHalf.UPPER)
         ) {
-            return blockPos.down();
+            return blockPos.below();
         }
 
         return blockPos;
     }
 
-    public static void createParticles(WorldAccess world, BlockPos blockPos, int count) {
+    public static void createParticles(LevelAccessor world, BlockPos blockPos, int count) {
         var blockState = world.getBlockState(blockPos);
         var oldBlock = blockState.getBlock();
         var blockReplacement = BLOCK_REPLACEMENT_MAP.get(oldBlock);
 
         if (oldBlock == Blocks.CRIMSON_NYLIUM) {
-            ParticleUtil.spawnParticlesAround(world, blockPos, count * 3, 3.0, 1.0, false, ParticleTypes.CRIMSON_SPORE);
+            ParticleUtils.spawnParticles(world, blockPos, count * 3, 3.0, 1.0, false, ParticleTypes.CRIMSON_SPORE);
         } else if (blockReplacement != null) {
-            ParticleUtil.spawnParticlesAround(world, calculateNewBlockPos(blockState, blockPos), count, ParticleTypes.CRIMSON_SPORE);
+            ParticleUtils.spawnParticleInBlock(world, calculateNewBlockPos(blockState, blockPos), count, ParticleTypes.CRIMSON_SPORE);
         }
     }
 }

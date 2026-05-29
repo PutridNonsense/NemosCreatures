@@ -2,378 +2,378 @@ package com.nemonotfound.nemos.creatures.datagen;
 
 import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
 import com.nemonotfound.nemos.creatures.item.CreaturesItems;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootTableProvider;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.condition.EntityPropertiesLootCondition;
-import net.minecraft.loot.condition.KilledByPlayerLootCondition;
-import net.minecraft.loot.condition.RandomChanceWithEnchantedBonusLootCondition;
-import net.minecraft.loot.context.LootContext;
-import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.entry.LootPoolEntry;
-import net.minecraft.loot.entry.TagEntry;
-import net.minecraft.loot.function.EnchantedCountIncreaseLootFunction;
-import net.minecraft.loot.function.FurnaceSmeltLootFunction;
-import net.minecraft.loot.function.SetCountLootFunction;
-import net.minecraft.loot.function.SetPotionLootFunction;
-import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
-import net.minecraft.loot.provider.number.UniformLootNumberProvider;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.Potions;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.EntityTypeTags;
-import net.minecraft.registry.tag.ItemTags;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricEntityLootSubProvider;
+import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.TagEntry;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
+import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class EntityLootTableProvider extends FabricEntityLootTableProvider {
+public class EntityLootTableProvider extends FabricEntityLootSubProvider {
 
-    public EntityLootTableProvider(FabricDataOutput output, @NotNull CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+    public EntityLootTableProvider(FabricPackOutput output, @NotNull CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
     }
 
     @Override
     public void generate() {
-        RegistryEntryLookup<EntityType<?>> entityTypeRegistryEntryLookup = this.registries.getOrThrow(RegistryKeys.ENTITY_TYPE);
+        HolderGetter<EntityType<?>> entityTypeRegistryEntryLookup = this.registries.lookupOrThrow(Registries.ENTITY_TYPE);
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.CRIMSON_SKELETON,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.ARROW))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.ARROW))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(CreaturesItems.CRIMSON_BONE))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(CreaturesItems.CRIMSON_BONE))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.BONE))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.BONE))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(
-                                                ItemEntry.builder(Items.CRIMSON_FUNGUS)
-                                                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
-                                                        .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
+                                                LootItem.lootTableItem(Items.CRIMSON_FUNGUS)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                         )
                         )
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.WARPED_SKELETON,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.ARROW))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.ARROW))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(CreaturesItems.WARPED_BONE))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(CreaturesItems.WARPED_BONE))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.BONE))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.BONE))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(
-                                                ItemEntry.builder(Items.WARPED_FUNGUS)
-                                                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
-                                                        .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
+                                                LootItem.lootTableItem(Items.WARPED_FUNGUS)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                         )
                         )
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.VENOMOUS_SKELETON,
                 defaultSkeletonLootTableBuilder()
-                        .pool(tippedArrowLootPoolBuilder(Potions.POISON))
+                        .withPool(tippedArrowLootPoolBuilder(Potions.POISON))
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SNOWY_SKELETON,
                 defaultSkeletonLootTableBuilder()
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
-                        .pool(tippedArrowLootPoolBuilder(Potions.SLOWNESS))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(tippedArrowLootPoolBuilder(Potions.SLOWNESS))
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.FROZEN_SKELETON,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.ARROW))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.ARROW))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(CreaturesItems.FROZEN_BONE))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(CreaturesItems.FROZEN_BONE))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.BONE))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.BONE))
                         )
-                        .pool(tippedArrowLootPoolBuilder(Potions.SLOWNESS))
+                        .withPool(tippedArrowLootPoolBuilder(Potions.SLOWNESS))
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.FROZEN_ZOMBIE,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.ROTTEN_FLESH))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.ROTTEN_FLESH))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(ItemEntry.builder(Items.IRON_INGOT))
-                                        .with(ItemEntry.builder(Items.CARROT))
-                                        .with(ItemEntry.builder(Items.POTATO).apply(FurnaceSmeltLootFunction.builder().conditionally(this.createSmeltLootCondition())))
-                                        .conditionally(KilledByPlayerLootCondition.builder())
-                                        .conditionally(RandomChanceWithEnchantedBonusLootCondition.builder(this.registries, 0.025F, 0.01F))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+                                        .add(LootItem.lootTableItem(Items.CARROT))
+                                        .add(LootItem.lootTableItem(Items.POTATO).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+                                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
                         )
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.VENOMOUS_ZOMBIE,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.ROTTEN_FLESH))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.ROTTEN_FLESH))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(ItemEntry.builder(Items.IRON_INGOT))
-                                        .with(ItemEntry.builder(Items.POISONOUS_POTATO))
-                                        .conditionally(KilledByPlayerLootCondition.builder())
-                                        .conditionally(RandomChanceWithEnchantedBonusLootCondition.builder(this.registries, 0.025F, 0.01F))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+                                        .add(LootItem.lootTableItem(Items.POISONOUS_POTATO))
+                                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
                         )
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SNOWY_ZOMBIE,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.ROTTEN_FLESH))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.ROTTEN_FLESH))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(ItemEntry.builder(Items.IRON_INGOT))
-                                        .with(ItemEntry.builder(Items.CARROT))
-                                        .with(ItemEntry.builder(Items.POTATO).apply(FurnaceSmeltLootFunction.builder().conditionally(this.createSmeltLootCondition())))
-                                        .conditionally(KilledByPlayerLootCondition.builder())
-                                        .conditionally(RandomChanceWithEnchantedBonusLootCondition.builder(this.registries, 0.025F, 0.01F))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+                                        .add(LootItem.lootTableItem(Items.CARROT))
+                                        .add(LootItem.lootTableItem(Items.POTATO).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+                                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
                         )
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
         );
 
-        this.register(CreaturesEntityTypes.FROZEN_CREEPER, defaultCreeperLootTableBuilder(entityTypeRegistryEntryLookup));
+        this.add(CreaturesEntityTypes.FROZEN_CREEPER, defaultCreeperLootTableBuilder(entityTypeRegistryEntryLookup));
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SCORCHED_CREEPER,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.GUNPOWDER))
-                                        .with(itemEntryBuilder(CreaturesItems.SAND_DUST))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.GUNPOWDER))
+                                        .add(itemEntryBuilder(CreaturesItems.SAND_DUST))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .with(TagEntry.expandBuilder(ItemTags.CREEPER_DROP_MUSIC_DISCS))
-                                        .conditionally(
-                                                EntityPropertiesLootCondition.builder(
-                                                        LootContext.EntityReference.ATTACKER,
-                                                        EntityPredicate.Builder.create()
-                                                                .type(entityTypeRegistryEntryLookup, EntityTypeTags.SKELETONS)
+                        .withPool(
+                                LootPool.lootPool()
+                                        .add(TagEntry.expandTag(ItemTags.CREEPER_DROP_MUSIC_DISCS))
+                                        .when(
+                                                LootItemEntityPropertyCondition.hasProperties(
+                                                        LootContext.EntityTarget.ATTACKER,
+                                                        EntityPredicate.Builder.entity()
+                                                                .of(entityTypeRegistryEntryLookup, EntityTypeTags.SKELETONS)
                                                 )
                                         )
                         )
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SNOWY_CREEPER,
                 defaultCreeperLootTableBuilder(entityTypeRegistryEntryLookup)
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
         );
 
-        this.register(CreaturesEntityTypes.VENOMOUS_CREEPER, defaultCreeperLootTableBuilder(entityTypeRegistryEntryLookup));
+        this.add(CreaturesEntityTypes.VENOMOUS_CREEPER, defaultCreeperLootTableBuilder(entityTypeRegistryEntryLookup));
 
-        this.register(CreaturesEntityTypes.FROZEN_SPIDER, defaultSpiderLootTableBuilder());
-        this.register(CreaturesEntityTypes.ICE_SPIDER, defaultSpiderLootTableBuilder());
-        this.register(
+        this.add(CreaturesEntityTypes.FROZEN_SPIDER, defaultSpiderLootTableBuilder());
+        this.add(CreaturesEntityTypes.ICE_SPIDER, defaultSpiderLootTableBuilder());
+        this.add(
                 CreaturesEntityTypes.SAND_SPIDER,
                 defaultSpiderLootTableBuilder()
-                        .pool(lootPoolBuilder(CreaturesItems.SAND_DUST))
+                        .withPool(lootPoolBuilder(CreaturesItems.SAND_DUST))
         );
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SNOW_SPIDER,
                 defaultSpiderLootTableBuilder()
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
         );
-        this.register(CreaturesEntityTypes.VENOMOUS_SPIDER, defaultSpiderLootTableBuilder());
-        this.register(
+        this.add(CreaturesEntityTypes.VENOMOUS_SPIDER, defaultSpiderLootTableBuilder());
+        this.add(
                 CreaturesEntityTypes.SNOWY_SPIDER,
                 defaultSpiderLootTableBuilder()
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SNOWY_COW,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(itemEntryBuilder(Items.LEATHER))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(itemEntryBuilder(Items.LEATHER))
                         )
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(
-                                                ItemEntry.builder(Items.BEEF)
-                                                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))
-                                                        .apply(FurnaceSmeltLootFunction.builder().conditionally(this.createSmeltLootCondition()))
-                                                        .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
+                                                LootItem.lootTableItem(Items.BEEF)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                        .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                         )
                         )
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.SNOWY_PIG,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(
-                                                ItemEntry.builder(Items.PORKCHOP)
-                                                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))
-                                                        .apply(FurnaceSmeltLootFunction.builder().conditionally(this.createSmeltLootCondition()))
-                                                        .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
+                                                LootItem.lootTableItem(Items.PORKCHOP)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                        .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                         )
                         )
-                        .pool(lootPoolBuilder(Items.SNOWBALL))
+                        .withPool(lootPoolBuilder(Items.SNOWBALL))
         );
 
-        this.register(
+        this.add(
                 CreaturesEntityTypes.WILD_BOAR,
-                LootTable.builder()
-                        .pool(
-                                LootPool.builder()
-                                        .rolls(ConstantLootNumberProvider.create(1.0F))
-                                        .with(
-                                                ItemEntry.builder(Items.PORKCHOP)
-                                                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0F, 3.0F)))
-                                                        .apply(FurnaceSmeltLootFunction.builder().conditionally(this.createSmeltLootCondition()))
-                                                        .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+                LootTable.lootTable()
+                        .withPool(
+                                LootPool.lootPool()
+                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .add(
+                                                LootItem.lootTableItem(Items.PORKCHOP)
+                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F)))
+                                                        .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                         )
                         )
         );
     }
 
     private LootPool.Builder lootPoolBuilder(Item item) {
-        return LootPool.builder()
-                .rolls(ConstantLootNumberProvider.create(1.0F))
-                .with(
-                        ItemEntry.builder(item)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F)))
-                                .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+        return LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1.0F))
+                .add(
+                        LootItem.lootTableItem(item)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                 );
     }
 
-    private LootPoolEntry.Builder<?> itemEntryBuilder(Item item) {
-        return ItemEntry.builder(item)
-                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 2.0F)))
-                .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)));
+    private LootPoolEntryContainer.Builder<?> itemEntryBuilder(Item item) {
+        return LootItem.lootTableItem(item)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 2.0F)))
+                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)));
     }
 
     private LootTable.Builder defaultSkeletonLootTableBuilder() {
-        return LootTable.builder()
-                .pool(
-                        LootPool.builder()
-                                .rolls(ConstantLootNumberProvider.create(1.0F))
-                                .with(itemEntryBuilder(Items.ARROW))
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(itemEntryBuilder(Items.ARROW))
                 )
-                .pool(
-                        LootPool.builder()
-                                .rolls(ConstantLootNumberProvider.create(1.0F))
-                                .with(itemEntryBuilder(Items.BONE))
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(itemEntryBuilder(Items.BONE))
                 );
     }
 
-    private LootPool.Builder tippedArrowLootPoolBuilder(RegistryEntry<Potion> potion) {
-        return LootPool.builder()
-                .rolls(ConstantLootNumberProvider.create(1.0F))
-                .with(
-                        ItemEntry.builder(Items.TIPPED_ARROW)
-                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(0.0F, 1.0F)))
-                                .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)).withLimit(1))
-                                .apply(SetPotionLootFunction.builder(potion))
+    private LootPool.Builder tippedArrowLootPoolBuilder(Holder<Potion> potion) {
+        return LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1.0F))
+                .add(
+                        LootItem.lootTableItem(Items.TIPPED_ARROW)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
+                                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)).setLimit(1))
+                                .apply(SetPotionFunction.setPotion(potion))
                 )
-                .conditionally(KilledByPlayerLootCondition.builder());
+                .when(LootItemKilledByPlayerCondition.killedByPlayer());
     }
 
-    private LootTable.Builder defaultCreeperLootTableBuilder(RegistryEntryLookup<EntityType<?>> registryEntryLookup) {
-        return LootTable.builder()
-                .pool(
-                        LootPool.builder()
-                                .rolls(ConstantLootNumberProvider.create(1.0F))
-                                .with(itemEntryBuilder(Items.GUNPOWDER))
+    private LootTable.Builder defaultCreeperLootTableBuilder(HolderGetter<EntityType<?>> registryEntryLookup) {
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(itemEntryBuilder(Items.GUNPOWDER))
                 )
-                .pool(
-                        LootPool.builder()
-                                .with(TagEntry.expandBuilder(ItemTags.CREEPER_DROP_MUSIC_DISCS))
-                                .conditionally(
-                                        EntityPropertiesLootCondition.builder(
-                                                LootContext.EntityReference.ATTACKER, EntityPredicate.Builder.create().type(registryEntryLookup, EntityTypeTags.SKELETONS)
+                .withPool(
+                        LootPool.lootPool()
+                                .add(TagEntry.expandTag(ItemTags.CREEPER_DROP_MUSIC_DISCS))
+                                .when(
+                                        LootItemEntityPropertyCondition.hasProperties(
+                                                LootContext.EntityTarget.ATTACKER, EntityPredicate.Builder.entity().of(registryEntryLookup, EntityTypeTags.SKELETONS)
                                         )
                                 )
                 );
     }
 
     private LootTable.Builder defaultSpiderLootTableBuilder() {
-        return LootTable.builder()
-                .pool(
-                        LootPool.builder()
-                                .rolls(ConstantLootNumberProvider.create(1.0F))
-                                .with(itemEntryBuilder(Items.STRING))
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(itemEntryBuilder(Items.STRING))
                 )
-                .pool(
-                        LootPool.builder()
-                                .rolls(ConstantLootNumberProvider.create(1.0F))
-                                .with(
-                                        ItemEntry.builder(Items.SPIDER_EYE)
-                                                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(-1.0F, 1.0F)))
-                                                .apply(EnchantedCountIncreaseLootFunction.builder(this.registries, UniformLootNumberProvider.create(0.0F, 1.0F)))
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(Items.SPIDER_EYE)
+                                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(-1.0F, 1.0F)))
+                                                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
                                 )
-                                .conditionally(KilledByPlayerLootCondition.builder())
+                                .when(LootItemKilledByPlayerCondition.killedByPlayer())
                 );
     }
 }

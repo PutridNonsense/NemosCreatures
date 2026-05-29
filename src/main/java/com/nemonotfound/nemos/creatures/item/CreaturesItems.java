@@ -2,18 +2,17 @@ package com.nemonotfound.nemos.creatures.item;
 
 import com.nemonotfound.nemos.creatures.block.CreaturesBlocks;
 import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-
 import java.util.function.Function;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 
 import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
 
@@ -43,28 +42,28 @@ public class CreaturesItems {
     public static final Item SAND_DUST = register("sand_dust", Item::new);
     public static final Item FROZEN_BONE = register("frozen_bone", Item::new);
     public static final Item FROZEN_BONE_MEAL = register("frozen_bone_meal", FrozenBoneMealItem::new);
-    public static final Item FROZEN_BONE_BLOCK = Items.register(CreaturesBlocks.FROZEN_BONE_BLOCK);
+    public static final Item FROZEN_BONE_BLOCK = Items.registerBlock(CreaturesBlocks.FROZEN_BONE_BLOCK);
     public static final Item PARCHED_BONE = register("parched_bone", Item::new);
     public static final Item PARCHED_BONE_MEAL = register("parched_bone_meal", ParchedBoneMealItem::new);
-    public static final Item PARCHED_BONE_BLOCK = Items.register(CreaturesBlocks.PARCHED_BONE_BLOCK);
+    public static final Item PARCHED_BONE_BLOCK = Items.registerBlock(CreaturesBlocks.PARCHED_BONE_BLOCK);
     public static final Item CRIMSON_BONE = register("crimson_bone", Item::new);
     public static final Item CRIMSON_BONE_MEAL = register("crimson_bone_meal", CrimsonBoneMealItem::new);
-    public static final Item CRIMSON_BONE_BLOCK = Items.register(CreaturesBlocks.CRIMSON_BONE_BLOCK);
+    public static final Item CRIMSON_BONE_BLOCK = Items.registerBlock(CreaturesBlocks.CRIMSON_BONE_BLOCK);
     public static final Item WARPED_BONE = register("warped_bone", Item::new);
     public static final Item WARPED_BONE_MEAL = register("warped_bone_meal", WarpedBoneMealItem::new);
-    public static final Item WARPED_BONE_BLOCK = Items.register(CreaturesBlocks.WARPED_BONE_BLOCK);
+    public static final Item WARPED_BONE_BLOCK = Items.registerBlock(CreaturesBlocks.WARPED_BONE_BLOCK);
 
     public static void bootstrap() {}
 
-    private static Item register(String path, Function<Item.Settings, Item> factory) {
-        Identifier id = Identifier.of(MOD_ID, path);
-        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, id);
-        Item item = factory.apply(new Item.Settings().registryKey(key));
+    private static Item register(String path, Function<Item.Properties, Item> factory) {
+        Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, path);
+        ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, id);
+        Item item = factory.apply(new Item.Properties().setId(key));
 
-        return Registry.register(Registries.ITEM, key, item);
+        return Registry.register(BuiltInRegistries.ITEM, key, item);
     }
 
-    private static Function<Item.Settings, Item> createSpawnEggItem(EntityType<? extends MobEntity> entityType) {
+    private static Function<Item.Properties, Item> createSpawnEggItem(EntityType<? extends Mob> entityType) {
         return settings -> new SpawnEggItem(settings.spawnEgg(entityType));
     }
 }

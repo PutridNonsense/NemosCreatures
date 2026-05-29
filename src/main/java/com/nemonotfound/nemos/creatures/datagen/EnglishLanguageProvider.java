@@ -4,20 +4,21 @@ import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
 import com.nemonotfound.nemos.creatures.item.CreaturesItemGroups;
 import com.nemonotfound.nemos.creatures.item.CreaturesItems;
 import com.nemonotfound.nemos.creatures.registry.tag.ModBiomeTags;
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import org.jspecify.annotations.NonNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class EnglishLanguageProvider extends FabricLanguageProvider {
 
-    public EnglishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
-        super(dataOutput, registryLookup);
+    public EnglishLanguageProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
+        super(output, registryLookup);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder translationBuilder) {
+    public void generateTranslations(HolderLookup.@NonNull Provider wrapperLookup, TranslationBuilder translationBuilder) {
         translationBuilder.add(CreaturesEntityTypes.VENOMOUS_SKELETON, "Venomous Skeleton");
         translationBuilder.add(CreaturesItems.VENOMOUS_SKELETON_SPAWN_EGG, "Venomous Skeleton Spawn Egg");
         translationBuilder.add(CreaturesEntityTypes.VENOMOUS_SPIDER, "Venomous Spider");

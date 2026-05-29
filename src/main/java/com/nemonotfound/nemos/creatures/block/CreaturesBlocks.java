@@ -1,11 +1,15 @@
 package com.nemonotfound.nemos.creatures.block;
 
-import net.minecraft.block.*;
-import net.minecraft.block.enums.NoteBlockInstrument;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 
 import java.util.function.Function;
 
@@ -15,52 +19,52 @@ public class CreaturesBlocks {
 
     public static final Block FROZEN_BONE_BLOCK = register(
             "frozen_bone_block",
-            PillarBlock::new,
-            AbstractBlock.Settings.create()
-                    .mapColor(MapColor.PALE_PURPLE)
+            RotatedPillarBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.ICE)
                     .instrument(NoteBlockInstrument.XYLOPHONE)
-                    .requiresTool()
+                    .requiresCorrectToolForDrops()
                     .strength(2.0F)
-                    .sounds(BlockSoundGroup.BONE)
+                    .sound(SoundType.BONE_BLOCK)
     );
     public static final Block PARCHED_BONE_BLOCK = register(
             "parched_bone_block",
-            PillarBlock::new,
-            AbstractBlock.Settings.create()
-                    .mapColor(MapColor.BROWN)
+            RotatedPillarBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BROWN)
                     .instrument(NoteBlockInstrument.XYLOPHONE)
-                    .requiresTool()
+                    .requiresCorrectToolForDrops()
                     .strength(2.0F)
-                    .sounds(BlockSoundGroup.BONE)
+                    .sound(SoundType.BONE_BLOCK)
     );
     public static final Block CRIMSON_BONE_BLOCK = register(
             "crimson_bone_block",
-            PillarBlock::new,
-            AbstractBlock.Settings.create()
-                    .mapColor(MapColor.RED)
+            RotatedPillarBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
                     .instrument(NoteBlockInstrument.XYLOPHONE)
-                    .requiresTool()
+                    .requiresCorrectToolForDrops()
                     .strength(2.0F)
-                    .sounds(BlockSoundGroup.BONE)
+                    .sound(SoundType.BONE_BLOCK)
     );
     public static final Block WARPED_BONE_BLOCK = register(
             "warped_bone_block",
-            PillarBlock::new,
-            AbstractBlock.Settings.create()
-                    .mapColor(MapColor.BLUE)
+            RotatedPillarBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLUE)
                     .instrument(NoteBlockInstrument.XYLOPHONE)
-                    .requiresTool()
+                    .requiresCorrectToolForDrops()
                     .strength(2.0F)
-                    .sounds(BlockSoundGroup.BONE)
+                    .sound(SoundType.BONE_BLOCK)
     );
 
     public static void bootstrap() {}
 
-    private static Block register(String id, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings) {
+    private static Block register(String id, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {
         return Blocks.register(keyOf(id), factory, settings);
     }
 
-    private static RegistryKey<Block> keyOf(String id) {
-        return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(MOD_ID, id));
+    private static ResourceKey<Block> keyOf(String id) {
+        return ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(MOD_ID, id));
     }
 }

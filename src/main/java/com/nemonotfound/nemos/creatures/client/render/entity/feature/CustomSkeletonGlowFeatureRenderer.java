@@ -2,29 +2,30 @@ package com.nemonotfound.nemos.creatures.client.render.entity.feature;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.entity.feature.EyesFeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.SkeletonEntityModel;
-import net.minecraft.client.render.entity.state.SkeletonEntityRenderState;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.monster.skeleton.SkeletonModel;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.client.renderer.entity.state.SkeletonRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.NonNull;
 
 import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
 
 @Environment(value= EnvType.CLIENT)
-public class CustomSkeletonGlowFeatureRenderer<M extends SkeletonEntityModel<SkeletonEntityRenderState>>
-        extends EyesFeatureRenderer<SkeletonEntityRenderState, M> {
+public class CustomSkeletonGlowFeatureRenderer<M extends SkeletonModel<SkeletonRenderState>>
+        extends EyesLayer<SkeletonRenderState, M> {
 
-    private final RenderLayer eyes;
+    private final RenderType eyes;
 
-    public CustomSkeletonGlowFeatureRenderer(FeatureRendererContext<SkeletonEntityRenderState, M> featureRendererContext, String path) {
+    public CustomSkeletonGlowFeatureRenderer(RenderLayerParent<SkeletonRenderState, M> featureRendererContext, String path) {
         super(featureRendererContext);
-        eyes = RenderLayers.eyes(Identifier.of(MOD_ID, path));
+        eyes = RenderTypes.eyes(Identifier.fromNamespaceAndPath(MOD_ID, path));
     }
 
     @Override
-    public RenderLayer getEyesTexture() {
+    public @NonNull RenderType renderType() {
         return eyes;
     }
 }

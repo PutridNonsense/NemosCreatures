@@ -1,69 +1,69 @@
 package com.nemonotfound.nemos.creatures.item;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
 import static com.nemonotfound.nemos.creatures.item.CreaturesItems.*;
+import static net.minecraft.world.item.CreativeModeTab.Row.TOP;
 
 public class CreaturesItemGroups {
 
-    public static final RegistryKey<ItemGroup> NEMOS_CREATURES_KEY = RegistryKey.of(Registries.ITEM_GROUP.getKey(), Identifier.of(MOD_ID, "nemos_creatures"));
-    public static final ItemGroup NEMOS_CREATURES = FabricItemGroup.builder()
+    public static final ResourceKey<CreativeModeTab> NEMOS_CREATURES_KEY = ResourceKey.create(BuiltInRegistries.CREATIVE_MODE_TAB.key(), Identifier.fromNamespaceAndPath(MOD_ID, "nemos_creatures"));
+    public static final CreativeModeTab NEMOS_CREATURES = CreativeModeTab.builder(TOP, 0)
             .icon(() -> new ItemStack(SCORCHED_CREEPER_SPAWN_EGG))
-            .displayName(Text.translatable("itemGroup.nemos_creatures"))
+            .title(Component.translatable("itemGroup.nemos_creatures"))
             .build();
 
     public static void bootstrap() {
-        Registry.register(Registries.ITEM_GROUP, NEMOS_CREATURES_KEY, NEMOS_CREATURES);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, NEMOS_CREATURES_KEY, NEMOS_CREATURES);
 
         modifySpawnEggsItemGroup();
     }
 
     private static void modifySpawnEggsItemGroup() {
-        ItemGroupEvents.modifyEntriesEvent(NEMOS_CREATURES_KEY)
+        CreativeModeTabEvents.modifyOutputEvent(NEMOS_CREATURES_KEY)
                 .register(entries -> {
-                    entries.add(CRIMSON_SKELETON_SPAWN_EGG);
-                    entries.add(FROZEN_CREEPER_SPAWN_EGG);
-                    entries.add(FROZEN_SKELETON_SPAWN_EGG);
-                    entries.add(FROZEN_SPIDER_SPAWN_EGG);
-                    entries.add(FROZEN_ZOMBIE_SPAWN_EGG);
-                    entries.add(ICE_SPIDER_SPAWN_EGG);
-                    entries.add(SAND_SPIDER_SPAWN_EGG);
-                    entries.add(SCORCHED_CREEPER_SPAWN_EGG);
-                    entries.add(SNOW_SPIDER_SPAWN_EGG);
-                    entries.add(SNOWY_COW_SPAWN_EGG);
-                    entries.add(SNOWY_CREEPER_SPAWN_EGG);
-                    entries.add(SNOWY_PIG_SPAWN_EGG);
-                    entries.add(SNOWY_SKELETON_SPAWN_EGG);
-                    entries.add(SNOWY_SPIDER_SPAWN_EGG);
-                    entries.add(SNOWY_ZOMBIE_SPAWN_EGG);
-                    entries.add(VENOMOUS_CREEPER_SPAWN_EGG);
-                    entries.add(VENOMOUS_SKELETON_SPAWN_EGG);
-                    entries.add(VENOMOUS_SPIDER_SPAWN_EGG);
-                    entries.add(VENOMOUS_ZOMBIE_SPAWN_EGG);
-                    entries.add(WARPED_SKELETON_SPAWN_EGG);
-                    entries.add(WILD_BOAR_SPAWN_EGG);
-                    entries.add(SAND_DUST);
-                    entries.add(FROZEN_BONE_BLOCK);
-                    entries.add(FROZEN_BONE_MEAL);
-                    entries.add(FROZEN_BONE);
-                    entries.add(PARCHED_BONE_BLOCK);
-                    entries.add(PARCHED_BONE_MEAL);
-                    entries.add(PARCHED_BONE);
-                    entries.add(CRIMSON_BONE_BLOCK);
-                    entries.add(CRIMSON_BONE_MEAL);
-                    entries.add(CRIMSON_BONE);
-                    entries.add(WARPED_BONE_BLOCK);
-                    entries.add(WARPED_BONE_MEAL);
-                    entries.add(WARPED_BONE);
+                    entries.accept(CRIMSON_SKELETON_SPAWN_EGG);
+                    entries.accept(FROZEN_CREEPER_SPAWN_EGG);
+                    entries.accept(FROZEN_SKELETON_SPAWN_EGG);
+                    entries.accept(FROZEN_SPIDER_SPAWN_EGG);
+                    entries.accept(FROZEN_ZOMBIE_SPAWN_EGG);
+                    entries.accept(ICE_SPIDER_SPAWN_EGG);
+                    entries.accept(SAND_SPIDER_SPAWN_EGG);
+                    entries.accept(SCORCHED_CREEPER_SPAWN_EGG);
+                    entries.accept(SNOW_SPIDER_SPAWN_EGG);
+                    entries.accept(SNOWY_COW_SPAWN_EGG);
+                    entries.accept(SNOWY_CREEPER_SPAWN_EGG);
+                    entries.accept(SNOWY_PIG_SPAWN_EGG);
+                    entries.accept(SNOWY_SKELETON_SPAWN_EGG);
+                    entries.accept(SNOWY_SPIDER_SPAWN_EGG);
+                    entries.accept(SNOWY_ZOMBIE_SPAWN_EGG);
+                    entries.accept(VENOMOUS_CREEPER_SPAWN_EGG);
+                    entries.accept(VENOMOUS_SKELETON_SPAWN_EGG);
+                    entries.accept(VENOMOUS_SPIDER_SPAWN_EGG);
+                    entries.accept(VENOMOUS_ZOMBIE_SPAWN_EGG);
+                    entries.accept(WARPED_SKELETON_SPAWN_EGG);
+                    entries.accept(WILD_BOAR_SPAWN_EGG);
+                    entries.accept(SAND_DUST);
+                    entries.accept(FROZEN_BONE_BLOCK);
+                    entries.accept(FROZEN_BONE_MEAL);
+                    entries.accept(FROZEN_BONE);
+                    entries.accept(PARCHED_BONE_BLOCK);
+                    entries.accept(PARCHED_BONE_MEAL);
+                    entries.accept(PARCHED_BONE);
+                    entries.accept(CRIMSON_BONE_BLOCK);
+                    entries.accept(CRIMSON_BONE_MEAL);
+                    entries.accept(CRIMSON_BONE);
+                    entries.accept(WARPED_BONE_BLOCK);
+                    entries.accept(WARPED_BONE_MEAL);
+                    entries.accept(WARPED_BONE);
                 });
     }
 }

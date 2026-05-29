@@ -1,25 +1,26 @@
 package com.nemonotfound.nemos.creatures.client.render.entity.feature;
 
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.RenderLayers;
-import net.minecraft.client.render.entity.feature.EyesFeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.SpiderEntityModel;
-import net.minecraft.client.render.entity.state.LivingEntityRenderState;
-import net.minecraft.util.Identifier;
-
 import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
 
-public class CustomSpiderEyesFeatureRenderer<M extends SpiderEntityModel> extends EyesFeatureRenderer<LivingEntityRenderState, M> {
+import net.minecraft.client.model.monster.spider.SpiderModel;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.EyesLayer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.resources.Identifier;
+import org.jspecify.annotations.NonNull;
 
-    private final RenderLayer eyes;
+public class CustomSpiderEyesFeatureRenderer<M extends SpiderModel> extends EyesLayer<LivingEntityRenderState, M> {
 
-    public CustomSpiderEyesFeatureRenderer(FeatureRendererContext<LivingEntityRenderState, M> featureRendererContext, String path) {
+    private final RenderType eyes;
+
+    public CustomSpiderEyesFeatureRenderer(RenderLayerParent<LivingEntityRenderState, M> featureRendererContext, String path) {
         super(featureRendererContext);
-        eyes = RenderLayers.eyes(Identifier.of(MOD_ID, path));
+        eyes = RenderTypes.eyes(Identifier.fromNamespaceAndPath(MOD_ID, path));
     }
 
-    public RenderLayer getEyesTexture() {
+    public @NonNull RenderType renderType() {
         return eyes;
     }
 }

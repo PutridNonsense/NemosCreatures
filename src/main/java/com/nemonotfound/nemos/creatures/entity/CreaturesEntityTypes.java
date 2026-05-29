@@ -7,209 +7,212 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
-import net.minecraft.entity.*;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.Heightmap;
-
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.function.Predicate;
 
 import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
 
 public class CreaturesEntityTypes {
 
-    public static final EntityType<VenomousSkeletonEntity> VENOMOUS_SKELETON = register(
+    public static final EntityType<VenomousSkeleton> VENOMOUS_SKELETON = register(
             "venomous_skeleton",
-            EntityType.Builder.create(VenomousSkeletonEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.99f)
+            EntityType.Builder.of(VenomousSkeleton::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.99f)
                     .eyeHeight(1.74F)
-                    .vehicleAttachment(-0.7F)
-                    .maxTrackingRange(8)
-                    .notAllowedInPeaceful()
+                    .ridingOffset(-0.7F)
+                    .clientTrackingRange(8)
+                    .notInPeaceful()
     );
-    public static final EntityType<VenomousSpiderEntity> VENOMOUS_SPIDER = register(
+    public static final EntityType<VenomousSpider> VENOMOUS_SPIDER = register(
             "venomous_spider",
-            EntityType.Builder.create(VenomousSpiderEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.8f, 0.6f)
-                    .notAllowedInPeaceful());
-    public static final EntityType<VenomousZombieEntity> VENOMOUS_ZOMBIE = register(
+            EntityType.Builder.of(VenomousSpider::new, MobCategory.MONSTER)
+                    .sized(0.8f, 0.6f)
+                    .notInPeaceful());
+    public static final EntityType<VenomousZombie> VENOMOUS_ZOMBIE = register(
             "venomous_zombie",
-            EntityType.Builder.create(VenomousZombieEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.95f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(VenomousZombie::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f)
+                    .notInPeaceful()
     );
-    public static final EntityType<VenomousCreeperEntity> VENOMOUS_CREEPER = register(
+    public static final EntityType<VenomousCreeper> VENOMOUS_CREEPER = register(
             "venomous_creeper",
-            EntityType.Builder.create(VenomousCreeperEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.7f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(VenomousCreeper::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.7f)
+                    .notInPeaceful()
     );
-    public static final EntityType<SandSpiderEntity> SAND_SPIDER = register(
+    public static final EntityType<SandSpider> SAND_SPIDER = register(
             "sand_spider",
-            EntityType.Builder.create(SandSpiderEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.4f, 0.2f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(SandSpider::new, MobCategory.MONSTER)
+                    .sized(0.4f, 0.2f)
+                    .notInPeaceful()
     );
-    public static final EntityType<ScorchedCreeperEntity> SCORCHED_CREEPER = register(
+    public static final EntityType<ScorchedCreeper> SCORCHED_CREEPER = register(
             "scorched_creeper",
-            EntityType.Builder.create(ScorchedCreeperEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.7f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(ScorchedCreeper::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.7f)
+                    .notInPeaceful()
     );
-    public static final EntityType<CrimsonSkeletonEntity> CRIMSON_SKELETON = register(
+    public static final EntityType<CrimsonSkeleton> CRIMSON_SKELETON = register(
             "crimson_skeleton",
-            EntityType.Builder.create(CrimsonSkeletonEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.99f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(CrimsonSkeleton::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.99f)
+                    .notInPeaceful()
     );
-    public static final EntityType<WarpedSkeletonEntity> WARPED_SKELETON = register(
+    public static final EntityType<WarpedSkeleton> WARPED_SKELETON = register(
             "warped_skeleton",
-            EntityType.Builder.create(WarpedSkeletonEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.99f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(WarpedSkeleton::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.99f)
+                    .notInPeaceful()
     );
-    public static final EntityType<WildBoarEntity> WILD_BOAR = register("wild_boar",
-            EntityType.Builder.create(WildBoarEntity::new, SpawnGroup.CREATURE)
-                    .dimensions(0.9f, 0.9f)
+    public static final EntityType<WildBoar> WILD_BOAR = register("wild_boar",
+            EntityType.Builder.of(WildBoar::new, MobCategory.CREATURE)
+                    .sized(0.9f, 0.9f)
     );
-    public static final EntityType<SnowySkeletonEntity> SNOWY_SKELETON = register(
+    public static final EntityType<SnowySkeleton> SNOWY_SKELETON = register(
             "snowy_skeleton",
-            EntityType.Builder.create(SnowySkeletonEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.99f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(SnowySkeleton::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.99f)
+                    .notInPeaceful()
     );
-    public static final EntityType<SnowySpiderEntity> SNOWY_SPIDER = register(
+    public static final EntityType<SnowySpider> SNOWY_SPIDER = register(
             "snowy_spider",
-            EntityType.Builder.create(SnowySpiderEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(1.4F, 0.9F)
+            EntityType.Builder.of(SnowySpider::new, MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
                     .eyeHeight(0.65F)
                     .passengerAttachments(0.765F)
-                    .maxTrackingRange(8)
-                    .notAllowedInPeaceful()
+                    .clientTrackingRange(8)
+                    .notInPeaceful()
     );
-    public static final EntityType<SnowSpiderEntity> SNOW_SPIDER = register(
+    public static final EntityType<SnowSpider> SNOW_SPIDER = register(
             "snow_spider",
-            EntityType.Builder.create(SnowSpiderEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.4f, 0.2f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(SnowSpider::new, MobCategory.MONSTER)
+                    .sized(0.4f, 0.2f)
+                    .notInPeaceful()
     );
-    public static final EntityType<SnowyCreeperEntity> SNOWY_CREEPER = register(
+    public static final EntityType<SnowyCreeper> SNOWY_CREEPER = register(
             "snowy_creeper",
-            EntityType.Builder.create(SnowyCreeperEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.7f));
-    public static final EntityType<SnowyZombieEntity> SNOWY_ZOMBIE = register(
+            EntityType.Builder.of(SnowyCreeper::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.7f));
+    public static final EntityType<SnowyZombie> SNOWY_ZOMBIE = register(
             "snowy_zombie",
-            EntityType.Builder.create(SnowyZombieEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.95f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(SnowyZombie::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f)
+                    .notInPeaceful()
     );
-    public static final EntityType<SnowyPigEntity> SNOWY_PIG = register(
+    public static final EntityType<SnowyPig> SNOWY_PIG = register(
             "snowy_pig",
-            EntityType.Builder.create(SnowyPigEntity::new, SpawnGroup.CREATURE)
-                    .dimensions(0.9f, 0.9f)
+            EntityType.Builder.of(SnowyPig::new, MobCategory.CREATURE)
+                    .sized(0.9f, 0.9f)
                     .passengerAttachments(0.86875f)
-                    .maxTrackingRange(10)
+                    .clientTrackingRange(10)
     );
-    public static final EntityType<SnowyCowEntity> SNOWY_COW =  register(
+    public static final EntityType<SnowyCow> SNOWY_COW =  register(
             "snowy_cow",
-            EntityType.Builder.create(SnowyCowEntity::new, SpawnGroup.CREATURE)
-                    .dimensions(0.9f, 1.4f)
+            EntityType.Builder.of(SnowyCow::new, MobCategory.CREATURE)
+                    .sized(0.9f, 1.4f)
                     .eyeHeight(1.3f)
                     .passengerAttachments(1.36875f)
-                    .maxTrackingRange(10)
+                    .clientTrackingRange(10)
     );
-    public static final EntityType<FrozenSkeletonEntity> FROZEN_SKELETON = register(
+    public static final EntityType<FrozenSkeleton> FROZEN_SKELETON = register(
             "frozen_skeleton",
-            EntityType.Builder.create(FrozenSkeletonEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.99f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(FrozenSkeleton::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.99f)
+                    .notInPeaceful()
     );
-    public static final EntityType<FrozenCreeperEntity> FROZEN_CREEPER = register(
+    public static final EntityType<FrozenCreeper> FROZEN_CREEPER = register(
             "frozen_creeper",
-            EntityType.Builder.create(FrozenCreeperEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.7f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(FrozenCreeper::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.7f)
+                    .notInPeaceful()
     );
-    public static final EntityType<FrozenSpiderEntity> FROZEN_SPIDER = register(
+    public static final EntityType<FrozenSpider> FROZEN_SPIDER = register(
             "frozen_spider",
-            EntityType.Builder.create(FrozenSpiderEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(1.4F, 0.9F)
+            EntityType.Builder.of(FrozenSpider::new, MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
                     .eyeHeight(0.65F)
                     .passengerAttachments(0.765F)
-                    .maxTrackingRange(8)
-                    .notAllowedInPeaceful()
+                    .clientTrackingRange(8)
+                    .notInPeaceful()
     );
-    public static final EntityType<IceSpiderEntity> ICE_SPIDER = register(
+    public static final EntityType<IceSpider> ICE_SPIDER = register(
             "ice_spider",
-            EntityType.Builder.create(IceSpiderEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.4f, 0.2f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(IceSpider::new, MobCategory.MONSTER)
+                    .sized(0.4f, 0.2f)
+                    .notInPeaceful()
     );
-    public static final EntityType<FrozenZombieEntity> FROZEN_ZOMBIE = register(
+    public static final EntityType<FrozenZombie> FROZEN_ZOMBIE = register(
             "frozen_zombie",
-            EntityType.Builder.create(FrozenZombieEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(0.6f, 1.95f)
-                    .notAllowedInPeaceful()
+            EntityType.Builder.of(FrozenZombie::new, MobCategory.MONSTER)
+                    .sized(0.6f, 1.95f)
+                    .notInPeaceful()
     );
 
     public static <T extends Entity> EntityType<T> register(String path, EntityType.Builder<T> entityTypeBuilder) {
-        Identifier id = Identifier.of(MOD_ID, path);
-        RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, id);
+        Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, path);
+        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
 
-        return Registry.register(Registries.ENTITY_TYPE, key, entityTypeBuilder.build(key));
+        return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, entityTypeBuilder.build(key));
     }
 
     public static void registerSpawnRestrictions() {
-        SpawnRestriction.register(VENOMOUS_SKELETON, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(VENOMOUS_SPIDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(VENOMOUS_ZOMBIE, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(VENOMOUS_CREEPER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(SAND_SPIDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(SCORCHED_CREEPER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(CRIMSON_SKELETON, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(WARPED_SKELETON, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(WILD_BOAR, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, WildBoarEntity::canSpawn);
-        SpawnRestriction.register(SNOWY_SKELETON, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(SNOWY_PIG, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::isValidNaturalSpawn);
-        SpawnRestriction.register(SNOWY_COW, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::isValidNaturalSpawn);
-        SpawnRestriction.register(SNOWY_SPIDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(SNOW_SPIDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(SNOWY_CREEPER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(SNOWY_ZOMBIE, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(FROZEN_SKELETON, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(FROZEN_CREEPER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(FROZEN_SPIDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(ICE_SPIDER, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnInDark);
-        SpawnRestriction.register(FROZEN_ZOMBIE, SpawnLocationTypes.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnInDark);
+        SpawnPlacements.register(VENOMOUS_SKELETON, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(VENOMOUS_SPIDER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(VENOMOUS_ZOMBIE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(VENOMOUS_CREEPER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(SAND_SPIDER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(SCORCHED_CREEPER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(CRIMSON_SKELETON, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(WARPED_SKELETON, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(WILD_BOAR, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, WildBoar::canSpawn);
+        SpawnPlacements.register(SNOWY_SKELETON, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(SNOWY_PIG, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(SNOWY_COW, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(SNOWY_SPIDER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(SNOW_SPIDER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(SNOWY_CREEPER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(SNOWY_ZOMBIE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(FROZEN_SKELETON, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(FROZEN_CREEPER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(FROZEN_SPIDER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(ICE_SPIDER, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(FROZEN_ZOMBIE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
     }
 
     public static void registerAttributes() {
-        FabricDefaultAttributeRegistry.register(VENOMOUS_SKELETON, VenomousSkeletonEntity.createAbstractSkeletonAttributes());
-        FabricDefaultAttributeRegistry.register(VENOMOUS_SPIDER, VenomousSpiderEntity.createJungleSpiderAttributes());
-        FabricDefaultAttributeRegistry.register(VENOMOUS_ZOMBIE, VenomousZombieEntity.createZombieAttributes());
-        FabricDefaultAttributeRegistry.register(VENOMOUS_CREEPER, VenomousCreeperEntity.createCreeperAttributes());
-        FabricDefaultAttributeRegistry.register(SAND_SPIDER, SandSpiderEntity.createSandSpiderAttributes());
-        FabricDefaultAttributeRegistry.register(SCORCHED_CREEPER, ScorchedCreeperEntity.createCreeperAttributes());
-        FabricDefaultAttributeRegistry.register(CRIMSON_SKELETON, CrimsonSkeletonEntity.createAbstractSkeletonAttributes());
-        FabricDefaultAttributeRegistry.register(WARPED_SKELETON, WarpedSkeletonEntity.createAbstractSkeletonAttributes());
-        FabricDefaultAttributeRegistry.register(WILD_BOAR, WildBoarEntity.createBoarAttributes());
-        FabricDefaultAttributeRegistry.register(SNOWY_SKELETON, SnowySkeletonEntity.createAbstractSkeletonAttributes());
-        FabricDefaultAttributeRegistry.register(SNOWY_PIG, SnowyPigEntity.createPigAttributes());
-        FabricDefaultAttributeRegistry.register(SNOWY_COW, SnowyCowEntity.createCowAttributes());
-        FabricDefaultAttributeRegistry.register(SNOWY_SPIDER, SnowySpiderEntity.createSpiderAttributes());
-        FabricDefaultAttributeRegistry.register(SNOW_SPIDER, SnowSpiderEntity.createSnowSpiderAttributes());
-        FabricDefaultAttributeRegistry.register(SNOWY_CREEPER, SnowyCreeperEntity.createCreeperAttributes());
-        FabricDefaultAttributeRegistry.register(SNOWY_ZOMBIE, SnowyZombieEntity.createZombieAttributes());
-        FabricDefaultAttributeRegistry.register(FROZEN_SKELETON, FrozenSkeletonEntity.createFrozenSkeletonAttributes());
-        FabricDefaultAttributeRegistry.register(FROZEN_CREEPER, FrozenCreeperEntity.createCreeperAttributes());
-        FabricDefaultAttributeRegistry.register(FROZEN_SPIDER, FrozenSpiderEntity.createSpiderAttributes());
-        FabricDefaultAttributeRegistry.register(ICE_SPIDER, IceSpiderEntity.createIceSpiderAttributes());
-        FabricDefaultAttributeRegistry.register(FROZEN_ZOMBIE, FrozenZombieEntity.createZombieAttributes());
+        FabricDefaultAttributeRegistry.register(VENOMOUS_SKELETON, VenomousSkeleton.createAttributes());
+        FabricDefaultAttributeRegistry.register(VENOMOUS_SPIDER, VenomousSpider.createJungleSpiderAttributes());
+        FabricDefaultAttributeRegistry.register(VENOMOUS_ZOMBIE, VenomousZombie.createAttributes());
+        FabricDefaultAttributeRegistry.register(VENOMOUS_CREEPER, VenomousCreeper.createAttributes());
+        FabricDefaultAttributeRegistry.register(SAND_SPIDER, SandSpider.createSandSpiderAttributes());
+        FabricDefaultAttributeRegistry.register(SCORCHED_CREEPER, ScorchedCreeper.createAttributes());
+        FabricDefaultAttributeRegistry.register(CRIMSON_SKELETON, CrimsonSkeleton.createAttributes());
+        FabricDefaultAttributeRegistry.register(WARPED_SKELETON, WarpedSkeleton.createAttributes());
+        FabricDefaultAttributeRegistry.register(WILD_BOAR, WildBoar.createBoarAttributes());
+        FabricDefaultAttributeRegistry.register(SNOWY_SKELETON, SnowySkeleton.createAttributes());
+        FabricDefaultAttributeRegistry.register(SNOWY_PIG, SnowyPig.createAttributes());
+        FabricDefaultAttributeRegistry.register(SNOWY_COW, SnowyCow.createAttributes());
+        FabricDefaultAttributeRegistry.register(SNOWY_SPIDER, SnowySpider.createAttributes());
+        FabricDefaultAttributeRegistry.register(SNOW_SPIDER, SnowSpider.createSnowSpiderAttributes());
+        FabricDefaultAttributeRegistry.register(SNOWY_CREEPER, SnowyCreeper.createAttributes());
+        FabricDefaultAttributeRegistry.register(SNOWY_ZOMBIE, SnowyZombie.createAttributes());
+        FabricDefaultAttributeRegistry.register(FROZEN_SKELETON, FrozenSkeleton.createFrozenSkeletonAttributes());
+        FabricDefaultAttributeRegistry.register(FROZEN_CREEPER, FrozenCreeper.createAttributes());
+        FabricDefaultAttributeRegistry.register(FROZEN_SPIDER, FrozenSpider.createAttributes());
+        FabricDefaultAttributeRegistry.register(ICE_SPIDER, IceSpider.createIceSpiderAttributes());
+        FabricDefaultAttributeRegistry.register(FROZEN_ZOMBIE, FrozenZombie.createAttributes());
     }
 
     public static void addMobsToBiome() {
@@ -222,26 +225,26 @@ public class CreaturesEntityTypes {
         Predicate<BiomeSelectionContext> snowyTaiga = BiomeSelectors.tag(ModBiomeTags.IS_SNOWY_TAIGA);
         Predicate<BiomeSelectionContext> icy = BiomeSelectors.tag(ConventionalBiomeTags.IS_ICY);
 
-        BiomeModifications.addSpawn(jungle, SpawnGroup.MONSTER, VENOMOUS_SKELETON, 100, 4, 4);
-        BiomeModifications.addSpawn(jungle, SpawnGroup.MONSTER, VENOMOUS_SPIDER, 100, 4, 4);
-        BiomeModifications.addSpawn(jungle, SpawnGroup.MONSTER, VENOMOUS_ZOMBIE, 95, 4, 4);
-        BiomeModifications.addSpawn(jungle, SpawnGroup.MONSTER, VENOMOUS_CREEPER, 100, 4, 4);
-        BiomeModifications.addSpawn(desert, SpawnGroup.MONSTER, SAND_SPIDER, 100, 4, 4);
-        BiomeModifications.addSpawn(desert, SpawnGroup.MONSTER, SCORCHED_CREEPER, 100, 4, 4);
-        BiomeModifications.addSpawn(crimsonForest, SpawnGroup.MONSTER, CRIMSON_SKELETON, 40, 1, 1);
-        BiomeModifications.addSpawn(warpedForest, SpawnGroup.MONSTER, WARPED_SKELETON, 60, 1, 1);
-        BiomeModifications.addSpawn(forest, SpawnGroup.CREATURE, WILD_BOAR, 12, 2, 4);
-        BiomeModifications.addSpawn(snowy, SpawnGroup.MONSTER, SNOWY_SKELETON, 100, 4, 4);
-        BiomeModifications.addSpawn(snowy, SpawnGroup.MONSTER, SNOWY_SPIDER, 100, 4, 4);
-        BiomeModifications.addSpawn(snowy, SpawnGroup.MONSTER, SNOW_SPIDER, 100, 4, 4);
-        BiomeModifications.addSpawn(snowy, SpawnGroup.MONSTER, SNOWY_CREEPER, 100, 4, 4);
-        BiomeModifications.addSpawn(snowy, SpawnGroup.MONSTER, SNOWY_ZOMBIE, 95, 4, 4);
-        BiomeModifications.addSpawn(snowyTaiga, SpawnGroup.CREATURE, SNOWY_PIG, 10, 4, 4);
-        BiomeModifications.addSpawn(snowyTaiga, SpawnGroup.CREATURE, SNOWY_COW, 8, 4, 4);
-        BiomeModifications.addSpawn(icy, SpawnGroup.MONSTER, FROZEN_SKELETON, 80, 4, 4);
-        BiomeModifications.addSpawn(icy, SpawnGroup.MONSTER, FROZEN_CREEPER, 100, 4, 4);
-        BiomeModifications.addSpawn(icy, SpawnGroup.MONSTER, FROZEN_SPIDER, 100, 4, 4);
-        BiomeModifications.addSpawn(icy, SpawnGroup.MONSTER, ICE_SPIDER, 80, 4, 4);
-        BiomeModifications.addSpawn(icy, SpawnGroup.MONSTER, FROZEN_ZOMBIE, 95, 4, 4);
+        BiomeModifications.addSpawn(jungle, MobCategory.MONSTER, VENOMOUS_SKELETON, 100, 4, 4);
+        BiomeModifications.addSpawn(jungle, MobCategory.MONSTER, VENOMOUS_SPIDER, 100, 4, 4);
+        BiomeModifications.addSpawn(jungle, MobCategory.MONSTER, VENOMOUS_ZOMBIE, 95, 4, 4);
+        BiomeModifications.addSpawn(jungle, MobCategory.MONSTER, VENOMOUS_CREEPER, 100, 4, 4);
+        BiomeModifications.addSpawn(desert, MobCategory.MONSTER, SAND_SPIDER, 100, 4, 4);
+        BiomeModifications.addSpawn(desert, MobCategory.MONSTER, SCORCHED_CREEPER, 100, 4, 4);
+        BiomeModifications.addSpawn(crimsonForest, MobCategory.MONSTER, CRIMSON_SKELETON, 40, 1, 1);
+        BiomeModifications.addSpawn(warpedForest, MobCategory.MONSTER, WARPED_SKELETON, 60, 1, 1);
+        BiomeModifications.addSpawn(forest, MobCategory.CREATURE, WILD_BOAR, 12, 2, 4);
+        BiomeModifications.addSpawn(snowy, MobCategory.MONSTER, SNOWY_SKELETON, 100, 4, 4);
+        BiomeModifications.addSpawn(snowy, MobCategory.MONSTER, SNOWY_SPIDER, 100, 4, 4);
+        BiomeModifications.addSpawn(snowy, MobCategory.MONSTER, SNOW_SPIDER, 100, 4, 4);
+        BiomeModifications.addSpawn(snowy, MobCategory.MONSTER, SNOWY_CREEPER, 100, 4, 4);
+        BiomeModifications.addSpawn(snowy, MobCategory.MONSTER, SNOWY_ZOMBIE, 95, 4, 4);
+        BiomeModifications.addSpawn(snowyTaiga, MobCategory.CREATURE, SNOWY_PIG, 10, 4, 4);
+        BiomeModifications.addSpawn(snowyTaiga, MobCategory.CREATURE, SNOWY_COW, 8, 4, 4);
+        BiomeModifications.addSpawn(icy, MobCategory.MONSTER, FROZEN_SKELETON, 80, 4, 4);
+        BiomeModifications.addSpawn(icy, MobCategory.MONSTER, FROZEN_CREEPER, 100, 4, 4);
+        BiomeModifications.addSpawn(icy, MobCategory.MONSTER, FROZEN_SPIDER, 100, 4, 4);
+        BiomeModifications.addSpawn(icy, MobCategory.MONSTER, ICE_SPIDER, 80, 4, 4);
+        BiomeModifications.addSpawn(icy, MobCategory.MONSTER, FROZEN_ZOMBIE, 95, 4, 4);
     }
 }

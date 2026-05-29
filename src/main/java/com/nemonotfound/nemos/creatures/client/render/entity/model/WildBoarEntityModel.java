@@ -1,54 +1,60 @@
 package com.nemonotfound.nemos.creatures.client.render.entity.model;
 
 import com.nemonotfound.nemos.creatures.client.render.entity.animation.Animations;
-import com.nemonotfound.nemos.creatures.client.render.entity.state.WildBoarEntityRenderState;
+import com.nemonotfound.nemos.creatures.client.render.entity.state.WildBoarRenderState;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.animation.Animation;
-import net.minecraft.client.render.entity.model.QuadrupedEntityModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
-public class WildBoarEntityModel extends QuadrupedEntityModel<WildBoarEntityRenderState> {
+public class WildBoarEntityModel extends QuadrupedModel<WildBoarRenderState> {
 
-    private final Animation idleAnimation;
-    private final Animation attackAnimation;
+    private final KeyframeAnimation idleAnimation;
+    private final KeyframeAnimation attackAnimation;
 
     public WildBoarEntityModel(ModelPart root) {
         super(root);
 
-        this.idleAnimation = Animations.WILD_BOAR_IDLE.createAnimation(root);
-        this.attackAnimation = Animations.WILD_BOAR_ATTACK.createAnimation(root);
+        this.idleAnimation = Animations.WILD_BOAR_IDLE.bake(root);
+        this.attackAnimation = Animations.WILD_BOAR_ATTACK.bake(root);
     }
 
-    public static TexturedModelData getTexturedModelData() {
-        ModelData modelData = new ModelData();
-        ModelPartData modelPartData = modelData.getRoot();
-        ModelPartData body = modelPartData.addChild("body", ModelPartBuilder.create().uv(0, 0).cuboid(-5.0F, -14.0F, -9.0F, 10.0F, 8.0F, 16.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 24.0F, 0.0F));
+    public static LayerDefinition getTexturedModelData() {
+        MeshDefinition modelData = new MeshDefinition();
+        PartDefinition modelPartData = modelData.getRoot();
+        PartDefinition body = modelPartData.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-5.0F, -14.0F, -9.0F, 10.0F, 8.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
-        ModelPartData back = body.addChild("back", ModelPartBuilder.create(), ModelTransform.of(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.0873F));
-        back.addChild("cube_r1", ModelPartBuilder.create().uv(20, 28).cuboid(-2.6889F, -15.0301F, -6.0F, 3.0F, 1.0F, 12.0F, new Dilation(0.0F))
-                .uv(0, 10).cuboid(-1.6889F, -16.0301F, -6.0F, 1.0F, 1.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0873F));
+        PartDefinition back = body.addOrReplaceChild("back", CubeListBuilder.create(), PartPose.offsetAndRotation(1.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.0873F));
+        back.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(20, 28).addBox(-2.6889F, -15.0301F, -6.0F, 3.0F, 1.0F, 12.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 10).addBox(-1.6889F, -16.0301F, -6.0F, 1.0F, 1.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0873F));
 
-        ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create().uv(0, 24).cuboid(-4.0F, -4.0F, -7.0F, 8.0F, 8.0F, 8.0F, new Dilation(0.0F))
-                .uv(38, 34).cuboid(-3.0F, 0.0F, -10.0F, 6.0F, 3.0F, 3.0F, new Dilation(0.0F))
-                .uv(36, 0).cuboid(-1.6889F, -5.0301F, -8.0F, 3.0F, 3.0F, 10.0F, new Dilation(0.0F))
-                .uv(32, 41).cuboid(-0.6889F, -6.0301F, -7.0F, 1.0F, 1.0F, 5.0F, new Dilation(0.0F)), ModelTransform.origin(0.0F, 12.0F, -8.0F));
-        head.addChild("horn_right", ModelPartBuilder.create().uv(7, 10).cuboid(-5.0F, -11.0F, -17.0F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-5.0F, -13.0F, -17.0F, 1.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(1.0F, 12.0F, 8.0F, 0.0F, 0.0F, -0.0873F));
-        head.addChild("horn_left", ModelPartBuilder.create().uv(7, 12).cuboid(3.0F, -11.0F, -17.0F, 2.0F, 1.0F, 1.0F, new Dilation(0.0F))
-                .uv(0, 10).cuboid(4.0F, -13.0F, -17.0F, 1.0F, 2.0F, 1.0F, new Dilation(0.0F)), ModelTransform.of(-1.0F, 12.0F, 8.0F, 0.0F, 0.0F, 0.0873F));
+        PartDefinition head = modelPartData.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 24).addBox(-4.0F, -4.0F, -7.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F))
+                .texOffs(38, 34).addBox(-3.0F, 0.0F, -10.0F, 6.0F, 3.0F, 3.0F, new CubeDeformation(0.0F))
+                .texOffs(36, 0).addBox(-1.6889F, -5.0301F, -8.0F, 3.0F, 3.0F, 10.0F, new CubeDeformation(0.0F))
+                .texOffs(32, 41).addBox(-0.6889F, -6.0301F, -7.0F, 1.0F, 1.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 12.0F, -8.0F));
+        head.addOrReplaceChild("horn_right", CubeListBuilder.create().texOffs(7, 10).addBox(-5.0F, -11.0F, -17.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 0).addBox(-5.0F, -13.0F, -17.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(1.0F, 12.0F, 8.0F, 0.0F, 0.0F, -0.0873F));
+        head.addOrReplaceChild("horn_left", CubeListBuilder.create().texOffs(7, 12).addBox(3.0F, -11.0F, -17.0F, 2.0F, 1.0F, 1.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 10).addBox(4.0F, -13.0F, -17.0F, 1.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 12.0F, 8.0F, 0.0F, 0.0F, 0.0873F));
 
-        modelPartData.addChild("right_hind_leg", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 18.0F, 6.0F));
-        modelPartData.addChild("left_hind_leg", ModelPartBuilder.create().uv(16, 41).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(3.0F, 18.0F, 6.0F));
-        modelPartData.addChild("left_front_leg", ModelPartBuilder.create().uv(0, 40).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(3.0F, 18.0F, -6.0F));
-        modelPartData.addChild("right_front_leg", ModelPartBuilder.create().uv(38, 24).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new Dilation(0.0F)), ModelTransform.origin(-3.0F, 18.0F, -6.0F));
+        modelPartData.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 18.0F, 6.0F));
+        modelPartData.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(16, 41).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, 18.0F, 6.0F));
+        modelPartData.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(0, 40).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, 18.0F, -6.0F));
+        modelPartData.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(38, 24).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 18.0F, -6.0F));
 
-        return TexturedModelData.of(modelData, 64, 64);
+        return LayerDefinition.create(modelData, 64, 64);
     }
 
     @Override
-    public void setAngles(WildBoarEntityRenderState wildBoarEntityRenderState) {
-        super.setAngles(wildBoarEntityRenderState);
+    public void setupAnim(WildBoarRenderState wildBoarRenderState) {
+        super.setupAnim(wildBoarRenderState);
 
-        this.idleAnimation.apply(wildBoarEntityRenderState.idleAnimationState, wildBoarEntityRenderState.age);
-        this.attackAnimation.apply(wildBoarEntityRenderState.attackAnimationState, wildBoarEntityRenderState.age);
+        this.idleAnimation.apply(wildBoarRenderState.idleAnimationState, wildBoarRenderState.ageInTicks);
+        this.attackAnimation.apply(wildBoarRenderState.attackAnimationState, wildBoarRenderState.ageInTicks);
     }
 }
