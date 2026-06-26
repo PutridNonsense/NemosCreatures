@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "group": "bonemeal",
   "ingredients": [
     "nemos-creatures:warped_bone_block"

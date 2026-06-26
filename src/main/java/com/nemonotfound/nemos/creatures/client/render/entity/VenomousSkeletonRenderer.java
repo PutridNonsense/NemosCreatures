@@ -1,7 +1,7 @@
 package com.nemonotfound.nemos.creatures.client.render.entity;
 
 import com.nemonotfound.nemos.creatures.client.render.entity.model.CreaturesEntityModelLayers;
-import com.nemonotfound.nemos.creatures.entity.mob.VenomousSkeleton;
+import com.nemonotfound.nemos.creatures.world.entity.mob.VenomousSkeleton;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;

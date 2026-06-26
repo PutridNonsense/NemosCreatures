@@ -2,12 +2,12 @@ package com.nemonotfound.nemos.creatures;
 
 import com.nemonotfound.nemos.creatures.block.CreaturesBlocks;
 import com.nemonotfound.nemos.creatures.block.ModDispenserBehavior;
-import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
+import com.nemonotfound.nemos.creatures.world.entity.CreaturesEntityTypes;
 import com.nemonotfound.nemos.creatures.item.CreaturesItemGroups;
 import com.nemonotfound.nemos.creatures.item.CreaturesItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import org.slf4j.Logger;
@@ -32,7 +32,7 @@ public class NemosCreatures implements ModInitializer {
 		ModDispenserBehavior.registerDefaults();
 
 		LootTableEvents.MODIFY.register((key, tableBuilder, source, _) -> {
-			if (source.isBuiltin() && EntityType.PARCHED.getDefaultLootTable().isPresent() && EntityType.PARCHED.getDefaultLootTable().get() == key) {
+			if (source.isBuiltin() && EntityTypes.PARCHED.getDefaultLootTable().isPresent() && EntityTypes.PARCHED.getDefaultLootTable().get() == key) {
 				var pool = LootPool.lootPool()
 						.add(LootItem.lootTableItem(CreaturesItems.PARCHED_BONE));
 

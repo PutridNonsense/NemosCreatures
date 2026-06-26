@@ -1,6 +1,6 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
-import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
+import com.nemonotfound.nemos.creatures.world.entity.CreaturesEntityTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntitySpawnReason;

@@ -1,6 +1,6 @@
 package com.nemonotfound.nemos.creatures.mixin;
 
-import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
+import com.nemonotfound.nemos.creatures.world.entity.CreaturesEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;

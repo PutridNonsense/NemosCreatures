@@ -1,4 +1,4 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -11,9 +11,9 @@ import net.minecraft.world.entity.monster.zombie.Zombie;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.NonNull;
 
-public class VenomousZombie extends Zombie {
+public class SnowyZombie extends Zombie {
 
-    public VenomousZombie(EntityType<? extends VenomousZombie> entityType, Level world) {
+    public SnowyZombie(EntityType<? extends SnowyZombie> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -31,18 +31,10 @@ public class VenomousZombie extends Zombie {
                     durationMultiplier = 15;
                 }
 
-                ((LivingEntity) target).addEffect(new MobEffectInstance(MobEffects.POISON, durationMultiplier * 20, 0), this);
+                ((LivingEntity) target).addEffect(new MobEffectInstance(MobEffects.SLOWNESS, durationMultiplier * 20, 0), this);
             }
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean canBeAffected(MobEffectInstance effect) {
-        if (effect.getEffect() == MobEffects.POISON) {
-            return false;
-        }
-        return super.canBeAffected(effect);
     }
 }

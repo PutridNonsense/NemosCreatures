@@ -1,6 +1,6 @@
-package com.nemonotfound.nemos.creatures.entity;
+package com.nemonotfound.nemos.creatures.world.entity;
 
-import com.nemonotfound.nemos.creatures.entity.mob.*;
+import com.nemonotfound.nemos.creatures.world.entity.mob.*;
 import com.nemonotfound.nemos.creatures.registry.tag.ModBiomeTags;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
@@ -9,8 +9,6 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.fabric.api.tag.convention.v2.ConventionalBiomeTags;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,12 +20,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import java.util.function.Predicate;
 
-import static com.nemonotfound.nemos.creatures.NemosCreatures.MOD_ID;
-
 public class CreaturesEntityTypes {
 
     public static final EntityType<VenomousSkeleton> VENOMOUS_SKELETON = register(
-            "venomous_skeleton",
+            CreaturesEntityTypeIds.VENOMOUS_SKELETON,
             EntityType.Builder.of(VenomousSkeleton::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.99f)
                     .eyeHeight(1.74F)
@@ -36,58 +32,58 @@ public class CreaturesEntityTypes {
                     .notInPeaceful()
     );
     public static final EntityType<VenomousSpider> VENOMOUS_SPIDER = register(
-            "venomous_spider",
+            CreaturesEntityTypeIds.VENOMOUS_SPIDER,
             EntityType.Builder.of(VenomousSpider::new, MobCategory.MONSTER)
                     .sized(0.8f, 0.6f)
                     .notInPeaceful());
     public static final EntityType<VenomousZombie> VENOMOUS_ZOMBIE = register(
-            "venomous_zombie",
+            CreaturesEntityTypeIds.VENOMOUS_ZOMBIE,
             EntityType.Builder.of(VenomousZombie::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f)
                     .notInPeaceful()
     );
     public static final EntityType<VenomousCreeper> VENOMOUS_CREEPER = register(
-            "venomous_creeper",
+            CreaturesEntityTypeIds.VENOMOUS_CREEPER,
             EntityType.Builder.of(VenomousCreeper::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.7f)
                     .notInPeaceful()
     );
     public static final EntityType<SandSpider> SAND_SPIDER = register(
-            "sand_spider",
+            CreaturesEntityTypeIds.SAND_SPIDER,
             EntityType.Builder.of(SandSpider::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.2f)
                     .notInPeaceful()
     );
     public static final EntityType<ScorchedCreeper> SCORCHED_CREEPER = register(
-            "scorched_creeper",
+            CreaturesEntityTypeIds.SCORCHED_CREEPER,
             EntityType.Builder.of(ScorchedCreeper::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.7f)
                     .notInPeaceful()
     );
     public static final EntityType<CrimsonSkeleton> CRIMSON_SKELETON = register(
-            "crimson_skeleton",
+            CreaturesEntityTypeIds.CRIMSON_SKELETON,
             EntityType.Builder.of(CrimsonSkeleton::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.99f)
                     .notInPeaceful()
     );
     public static final EntityType<WarpedSkeleton> WARPED_SKELETON = register(
-            "warped_skeleton",
+            CreaturesEntityTypeIds.WARPED_SKELETON,
             EntityType.Builder.of(WarpedSkeleton::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.99f)
                     .notInPeaceful()
     );
-    public static final EntityType<WildBoar> WILD_BOAR = register("wild_boar",
+    public static final EntityType<WildBoar> WILD_BOAR = register(CreaturesEntityTypeIds.WILD_BOAR,
             EntityType.Builder.of(WildBoar::new, MobCategory.CREATURE)
                     .sized(0.9f, 0.9f)
     );
     public static final EntityType<SnowySkeleton> SNOWY_SKELETON = register(
-            "snowy_skeleton",
+            CreaturesEntityTypeIds.SNOWY_SKELETON,
             EntityType.Builder.of(SnowySkeleton::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.99f)
                     .notInPeaceful()
     );
     public static final EntityType<SnowySpider> SNOWY_SPIDER = register(
-            "snowy_spider",
+            CreaturesEntityTypeIds.SNOWY_SPIDER,
             EntityType.Builder.of(SnowySpider::new, MobCategory.MONSTER)
                     .sized(1.4F, 0.9F)
                     .eyeHeight(0.65F)
@@ -96,30 +92,30 @@ public class CreaturesEntityTypes {
                     .notInPeaceful()
     );
     public static final EntityType<SnowSpider> SNOW_SPIDER = register(
-            "snow_spider",
+            CreaturesEntityTypeIds.SNOW_SPIDER,
             EntityType.Builder.of(SnowSpider::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.2f)
                     .notInPeaceful()
     );
     public static final EntityType<SnowyCreeper> SNOWY_CREEPER = register(
-            "snowy_creeper",
+            CreaturesEntityTypeIds.SNOWY_CREEPER,
             EntityType.Builder.of(SnowyCreeper::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.7f));
     public static final EntityType<SnowyZombie> SNOWY_ZOMBIE = register(
-            "snowy_zombie",
+            CreaturesEntityTypeIds.SNOWY_ZOMBIE,
             EntityType.Builder.of(SnowyZombie::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f)
                     .notInPeaceful()
     );
     public static final EntityType<SnowyPig> SNOWY_PIG = register(
-            "snowy_pig",
+            CreaturesEntityTypeIds.SNOWY_PIG,
             EntityType.Builder.of(SnowyPig::new, MobCategory.CREATURE)
                     .sized(0.9f, 0.9f)
                     .passengerAttachments(0.86875f)
                     .clientTrackingRange(10)
     );
     public static final EntityType<SnowyCow> SNOWY_COW =  register(
-            "snowy_cow",
+            CreaturesEntityTypeIds.SNOWY_COW,
             EntityType.Builder.of(SnowyCow::new, MobCategory.CREATURE)
                     .sized(0.9f, 1.4f)
                     .eyeHeight(1.3f)
@@ -127,19 +123,19 @@ public class CreaturesEntityTypes {
                     .clientTrackingRange(10)
     );
     public static final EntityType<FrozenSkeleton> FROZEN_SKELETON = register(
-            "frozen_skeleton",
+            CreaturesEntityTypeIds.FROZEN_SKELETON,
             EntityType.Builder.of(FrozenSkeleton::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.99f)
                     .notInPeaceful()
     );
     public static final EntityType<FrozenCreeper> FROZEN_CREEPER = register(
-            "frozen_creeper",
+            CreaturesEntityTypeIds.FROZEN_CREEPER,
             EntityType.Builder.of(FrozenCreeper::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.7f)
                     .notInPeaceful()
     );
     public static final EntityType<FrozenSpider> FROZEN_SPIDER = register(
-            "frozen_spider",
+            CreaturesEntityTypeIds.FROZEN_SPIDER,
             EntityType.Builder.of(FrozenSpider::new, MobCategory.MONSTER)
                     .sized(1.4F, 0.9F)
                     .eyeHeight(0.65F)
@@ -148,22 +144,19 @@ public class CreaturesEntityTypes {
                     .notInPeaceful()
     );
     public static final EntityType<IceSpider> ICE_SPIDER = register(
-            "ice_spider",
+            CreaturesEntityTypeIds.ICE_SPIDER,
             EntityType.Builder.of(IceSpider::new, MobCategory.MONSTER)
                     .sized(0.4f, 0.2f)
                     .notInPeaceful()
     );
     public static final EntityType<FrozenZombie> FROZEN_ZOMBIE = register(
-            "frozen_zombie",
+            CreaturesEntityTypeIds.FROZEN_ZOMBIE,
             EntityType.Builder.of(FrozenZombie::new, MobCategory.MONSTER)
                     .sized(0.6f, 1.95f)
                     .notInPeaceful()
     );
 
-    public static <T extends Entity> EntityType<T> register(String path, EntityType.Builder<T> entityTypeBuilder) {
-        Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, path);
-        ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, id);
-
+    public static <T extends Entity> EntityType<T> register(ResourceKey<EntityType<?>> key, EntityType.Builder<T> entityTypeBuilder) {
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, entityTypeBuilder.build(key));
     }
 

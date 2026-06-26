@@ -2,7 +2,7 @@ package com.nemonotfound.nemos.creatures.client.render.entity;
 
 import com.nemonotfound.nemos.creatures.client.render.entity.feature.CustomSkeletonGlowFeatureRenderer;
 import com.nemonotfound.nemos.creatures.client.render.entity.model.CreaturesEntityModelLayers;
-import com.nemonotfound.nemos.creatures.entity.mob.SnowySkeleton;
+import com.nemonotfound.nemos.creatures.world.entity.mob.SnowySkeleton;
 import net.minecraft.client.renderer.entity.AbstractSkeletonRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.layers.SkeletonClothingLayer;

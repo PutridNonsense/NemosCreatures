@@ -1,4 +1,4 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
 import java.util.Collection;
 import java.util.List;

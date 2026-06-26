@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -31,6 +32,7 @@ public class ModNetherConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> WARPED_FOREST_VEGETATION_PATCH_BONEMEAL = of("warped_forest_vegetation_patch_bonemeal");
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> featureRegisterable) {
+        HolderGetter<Block> blockLookup = featureRegisterable.lookup(Registries.BLOCK);
         HolderGetter<ConfiguredFeature<?, ?>> registryEntryLookup = featureRegisterable.lookup(Registries.CONFIGURED_FEATURE);
 
         WeightedStateProvider crimsonWeightedBlockStateProvider = new WeightedStateProvider(
@@ -51,7 +53,7 @@ public class ModNetherConfiguredFeatures {
                 CRIMSON_FOREST_VEGETATION_PATCH_BONEMEAL,
                 Feature.VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
-                        CreatureBlockTags.CRIMSON_BONE_MEAL_REPLACEABLE,
+                        blockLookup.getOrThrow(CreatureBlockTags.CRIMSON_BONE_MEAL_REPLACEABLE),
                         BlockStateProvider.simple(Blocks.CRIMSON_NYLIUM),
                         PlacementUtils.inlinePlaced(registryEntryLookup.getOrThrow(CRIMSON_FOREST_VEGETATION_PATCH)),
                         CaveSurface.FLOOR,
@@ -82,7 +84,7 @@ public class ModNetherConfiguredFeatures {
                 WARPED_FOREST_VEGETATION_PATCH_BONEMEAL,
                 Feature.VEGETATION_PATCH,
                 new VegetationPatchConfiguration(
-                        CreatureBlockTags.WARPED_BONE_MEAL_REPLACEABLE,
+                        blockLookup.getOrThrow(CreatureBlockTags.WARPED_BONE_MEAL_REPLACEABLE),
                         BlockStateProvider.simple(Blocks.WARPED_NYLIUM),
                         PlacementUtils.inlinePlaced(registryEntryLookup.getOrThrow(WARPED_FOREST_VEGETATION_PATCH)),
                         CaveSurface.FLOOR,

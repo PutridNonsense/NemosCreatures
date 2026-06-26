@@ -2,7 +2,7 @@ package com.nemonotfound.nemos.creatures.client.render.entity.model;
 
 import com.google.common.collect.ImmutableMap;
 import com.nemonotfound.nemos.creatures.client.render.entity.*;
-import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
+import com.nemonotfound.nemos.creatures.world.entity.CreaturesEntityTypes;
 import net.fabricmc.fabric.api.client.rendering.v1.ModelLayerRegistry;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.cow.CowModel;

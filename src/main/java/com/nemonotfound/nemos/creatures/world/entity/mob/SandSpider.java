@@ -1,4 +1,4 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
@@ -20,17 +20,16 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-public class IceSpider extends Spider {
+public class SandSpider extends Spider {
 
-    public IceSpider(EntityType<? extends IceSpider> entityType, Level world) {
+    public SandSpider(EntityType<? extends SandSpider> entityType, Level world) {
         super(entityType, world);
     }
 
-    public static AttributeSupplier.Builder createIceSpiderAttributes() {
+    public static AttributeSupplier.Builder createSandSpiderAttributes() {
         return Spider.createAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
-                .add(Attributes.ATTACK_DAMAGE, 4.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.28);
+                .add(Attributes.ATTACK_DAMAGE, 4.0);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class IceSpider extends Spider {
                 }
 
                 if (durationMultiplier > 0) {
-                    ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.SLOWNESS, durationMultiplier * 40, 0), this);
+                    ((LivingEntity)target).addEffect(new MobEffectInstance(MobEffects.HUNGER, durationMultiplier * 20, 0), this);
                 }
             }
             return true;

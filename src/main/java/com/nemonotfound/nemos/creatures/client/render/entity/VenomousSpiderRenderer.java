@@ -1,6 +1,6 @@
 package com.nemonotfound.nemos.creatures.client.render.entity;
 
-import com.nemonotfound.nemos.creatures.entity.mob.VenomousSpider;
+import com.nemonotfound.nemos.creatures.world.entity.mob.VenomousSpider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SpiderRenderer;
 import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;

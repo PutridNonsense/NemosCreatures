@@ -1,6 +1,6 @@
 package com.nemonotfound.nemos.creatures.datagen;
 
-import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
+import com.nemonotfound.nemos.creatures.world.entity.CreaturesEntityTypes;
 import com.nemonotfound.nemos.creatures.item.CreaturesItemGroups;
 import com.nemonotfound.nemos.creatures.item.CreaturesItems;
 import com.nemonotfound.nemos.creatures.registry.tag.ModBiomeTags;

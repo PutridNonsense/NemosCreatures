@@ -1,7 +1,7 @@
 package com.nemonotfound.nemos.creatures.client.render.entity;
 
 import com.nemonotfound.nemos.creatures.client.render.entity.model.CreaturesEntityModelLayers;
-import com.nemonotfound.nemos.creatures.entity.mob.FrozenZombie;
+import com.nemonotfound.nemos.creatures.world.entity.mob.FrozenZombie;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.monster.zombie.ZombieModel;
 import net.minecraft.client.renderer.entity.AbstractZombieRenderer;

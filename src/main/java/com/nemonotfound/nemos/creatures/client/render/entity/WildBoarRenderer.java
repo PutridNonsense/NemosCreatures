@@ -3,7 +3,7 @@ package com.nemonotfound.nemos.creatures.client.render.entity;
 import com.nemonotfound.nemos.creatures.client.render.entity.model.CreaturesEntityModelLayers;
 import com.nemonotfound.nemos.creatures.client.render.entity.model.WildBoarEntityModel;
 import com.nemonotfound.nemos.creatures.client.render.entity.state.WildBoarRenderState;
-import com.nemonotfound.nemos.creatures.entity.mob.WildBoar;
+import com.nemonotfound.nemos.creatures.world.entity.mob.WildBoar;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.AgeableMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

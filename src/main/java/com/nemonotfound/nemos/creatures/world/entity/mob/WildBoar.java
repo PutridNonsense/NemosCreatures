@@ -1,6 +1,6 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
-import com.nemonotfound.nemos.creatures.entity.CreaturesEntityTypes;
+import com.nemonotfound.nemos.creatures.world.entity.CreaturesEntityTypes;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -104,10 +104,6 @@ public class WildBoar extends Pig implements NeutralMob {
             return isBrightEnoughToSpawn(world, pos) && world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON);
         }
         return WildBoar.checkAnimalSpawnRules(type, world, spawnReason, pos, random);
-    }
-
-    protected static boolean isBrightEnoughToSpawn(BlockAndTintGetter world, BlockPos pos) {
-        return world.getRawBrightness(pos, 0) > 8;
     }
 
     public boolean isPlayerTooClose(LivingEntity entity, ServerLevel world) {

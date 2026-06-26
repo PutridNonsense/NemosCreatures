@@ -22,8 +22,6 @@ public class CreeperOverlayFeatureRenderer<S extends CreeperRenderState, M exten
         this.outerModel = new CreeperModel(loader.bakeLayer(layer));
     }
 
-
-
     @Override
     public void submit(@NonNull PoseStack matrixStack, @NonNull SubmitNodeCollector submitNodeCollector, int light, S zombieEntityRenderState, float limbAngle, float limbDistance) {
         coloredCutoutModelCopyLayerRender(outerModel, this.texture, matrixStack, submitNodeCollector, light, zombieEntityRenderState, -1, 1);

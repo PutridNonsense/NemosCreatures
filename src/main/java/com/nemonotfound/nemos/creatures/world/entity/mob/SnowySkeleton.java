@@ -1,4 +1,4 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -7,9 +7,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.skeleton.AbstractSkeleton;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.entity.projectile.arrow.Arrow;
@@ -19,9 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
-public class FrozenSkeleton extends AbstractSkeleton {
+public class SnowySkeleton extends AbstractSkeleton {
 
-    public FrozenSkeleton(EntityType<? extends AbstractSkeleton> entityType, Level world) {
+    public SnowySkeleton(EntityType<? extends AbstractSkeleton> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -57,7 +54,7 @@ public class FrozenSkeleton extends AbstractSkeleton {
 
     @Override
     public float getVoicePitch() {
-        return 0.9F;
+        return 1.1F;
     }
 
     @Override
@@ -70,13 +67,9 @@ public class FrozenSkeleton extends AbstractSkeleton {
         AbstractArrow persistentProjectileEntity = super.getArrow(arrow, damageModifier, shotFrom);
 
         if (persistentProjectileEntity instanceof Arrow) {
-            ((Arrow)persistentProjectileEntity).addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 400));
+            ((Arrow)persistentProjectileEntity).addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200));
         }
 
         return persistentProjectileEntity;
-    }
-
-    public static AttributeSupplier.Builder createFrozenSkeletonAttributes() {
-        return Monster.createMonsterAttributes().add(Attributes.MOVEMENT_SPEED, 0.23);
     }
 }

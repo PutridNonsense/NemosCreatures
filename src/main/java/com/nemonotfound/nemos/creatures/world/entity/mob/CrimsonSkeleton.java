@@ -1,6 +1,9 @@
-package com.nemonotfound.nemos.creatures.entity.mob;
+package com.nemonotfound.nemos.creatures.world.entity.mob;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -15,13 +18,15 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.NonNull;
 
-public class WarpedSkeleton extends AbstractSkeleton {
+public class CrimsonSkeleton extends AbstractSkeleton {
 
-    public WarpedSkeleton(EntityType<? extends AbstractSkeleton> entityType, Level world) {
+    public CrimsonSkeleton(EntityType<? extends AbstractSkeleton> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -57,7 +62,7 @@ public class WarpedSkeleton extends AbstractSkeleton {
 
     @Override
     public float getVoicePitch() {
-        return 1.1F;
+        return 0.8F;
     }
 
     @Override
@@ -69,6 +74,10 @@ public class WarpedSkeleton extends AbstractSkeleton {
     protected void populateDefaultEquipmentSlots(@NonNull RandomSource random, @NonNull DifficultyInstance localDifficulty) {
         super.populateDefaultEquipmentSlots(random, localDifficulty);
         ItemStack bow = new ItemStack(Items.BOW);
+        Registry<Enchantment> enchantmentRegistry = this.level().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+        Enchantment enchantment = enchantmentRegistry.getValue(Enchantments.FLAME);
+        Holder<Enchantment> enchantmentEntry = enchantmentRegistry.wrapAsHolder(enchantment);
+        bow.enchant(enchantmentEntry, 1);
         this.setItemSlot(EquipmentSlot.MAINHAND, bow);
     }
 
@@ -85,7 +94,7 @@ public class WarpedSkeleton extends AbstractSkeleton {
         var bow = this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW));
         var projectile = this.getProjectile(bow);
         var persistentProjectileEntity = this.getArrow(projectile, pullProgress, bow);
-        persistentProjectileEntity.setInvisible(true);
+        persistentProjectileEntity.lavaIgnite();
         var d = target.getX() - this.getX();
         var e = target.getY(0.3333333333333333) - persistentProjectileEntity.getY();
         var f = target.getZ() - this.getZ();
@@ -96,6 +105,6 @@ public class WarpedSkeleton extends AbstractSkeleton {
             Projectile.spawnProjectileUsingShoot(persistentProjectileEntity, serverWorld, projectile, d, e + g * (double)0.1f, f, 2.5f, 7 - world.getDifficulty().getId() * 4);
         }
 
-        this.playSound(SoundEvents.SKELETON_SHOOT, 1.0f, 1.0f / (this.getRandom().nextFloat() * 0.2f + 0.6f));
+        this.playSound(SoundEvents.SKELETON_SHOOT, 1.0f, 1.0f / (this.getRandom().nextFloat() * 0.4f + 0.8f));
     }
 }
